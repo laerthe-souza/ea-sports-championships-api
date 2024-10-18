@@ -1,0 +1,3 @@
+yarn validate-env-example
+yarn lint
+yarn build
