@@ -10,6 +10,8 @@ const envVariablesSchema = z.object({
     required_error: ZodErrors.required,
   }),
   PORT: z.string({ required_error: ZodErrors.required }),
+  JWT_SECRET: z.string({ required_error: ZodErrors.required }),
+  JWT_EXPIRATION: z.string({ required_error: ZodErrors.required }),
 });
 
 export function validateEnvVariables(
