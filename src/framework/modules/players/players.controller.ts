@@ -46,7 +46,7 @@ export class PlayersController {
   @Get('me')
   @UseGuards(AuthGuard)
   async find(@Req() request: Request) {
-    const { id } = request.user;
+    const { id } = request.player;
 
     return this.findPlayer.execute({ id });
   }

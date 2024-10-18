@@ -37,7 +37,7 @@ export class AuthGuard implements CanActivate {
       const payload = this.authProvider.decodeToken<IPayload>(token);
 
       Object.assign(request, {
-        user: payload,
+        player: payload,
       });
 
       return true;
