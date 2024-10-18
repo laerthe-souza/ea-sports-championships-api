@@ -1,6 +1,6 @@
 import { IAuthProvider } from '@core/application/providers/auth.provider';
 import { Player } from '@core/domain/entities/player.entity';
-import { IPlayersRepository } from '@core/domain/entities/repositories/players.repository';
+import { IPlayersRepository } from '@core/domain/repositories/players.repository';
 import { AuthProvider } from '@core/infra/providers/auth.provider';
 import { PlayersRepository } from '@core/infra/repositories/players.repository';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';

@@ -1,4 +1,4 @@
-import { Player } from '../player.entity';
+import { Player } from '../entities/player.entity';
 import { IFindPlayerInputDTO } from './dtos/find-player-input.dto';
 
 export interface IPlayersRepository {

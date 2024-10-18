@@ -1,6 +1,6 @@
 import { Player } from '@core/domain/entities/player.entity';
-import { IFindPlayerInputDTO } from '@core/domain/entities/repositories/dtos/find-player-input.dto';
-import { IPlayersRepository } from '@core/domain/entities/repositories/players.repository';
+import { IFindPlayerInputDTO } from '@core/domain/repositories/dtos/find-player-input.dto';
+import { IPlayersRepository } from '@core/domain/repositories/players.repository';
 import { PrismaProvider } from '@framework/infra/database/prisma/prisma.provider';
 import { Inject, Injectable } from '@nestjs/common';
 
