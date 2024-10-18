@@ -1,4 +1,5 @@
 import { Player } from '@core/domain/entities/player.entity';
+import { IFindManyPlayersInputDTO } from '@core/domain/repositories/dtos/find-many-players-input.dto';
 import { IFindPlayerInputDTO } from '@core/domain/repositories/dtos/find-player-input.dto';
 import { IPlayersRepository } from '@core/domain/repositories/players.repository';
 import { PrismaProvider } from '@framework/infra/database/prisma/prisma.provider';
@@ -51,5 +52,15 @@ export class PlayersRepository implements IPlayersRepository {
     }
 
     return Player.restore(player);
+  }
+
+  async findMany(input: IFindManyPlayersInputDTO): Promise<Player[]> {
+    const players = await this.prisma.player.findMany({
+      where: {
+        id: { in: input.ids },
+      },
+    });
+
+    return players.map(Player.restore);
   }
 }
