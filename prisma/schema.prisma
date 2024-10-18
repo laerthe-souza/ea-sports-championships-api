@@ -13,7 +13,7 @@ model Player {
   username  String   @unique
   password  String
   createdAt DateTime @default(now()) @map("created_at")
-  updateAt  DateTime @default(now()) @updatedAt @map("updated_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
   championships PlayerChampionship[]
   rounds        PlayerRound[]
@@ -25,8 +25,9 @@ model Player {
 model Championship {
   id        String   @id @default(uuid()) @db.Uuid
   name      String
+  createdBy String   @map("created_by") @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
-  updateAt  DateTime @default(now()) @updatedAt @map("updated_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
   players     PlayerChampionship[]
   rounds      Round[]
@@ -53,7 +54,7 @@ model Round {
   championshipId String   @map("championship_id") @db.Uuid
   hasPlayed      Boolean  @map("has_played")
   createdAt      DateTime @default(now()) @map("created_at")
-  updateAt       DateTime @default(now()) @updatedAt @map("updated_at")
+  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at")
 
   championship Championship  @relation(fields: [championshipId], references: [id])
   players      PlayerRound[]
@@ -68,7 +69,7 @@ model PlayerRound {
   goals     Int
   isHome    Boolean  @map("is_home")
   createdAt DateTime @default(now()) @map("created_at")
-  updateAt  DateTime @default(now()) @updatedAt @map("updated_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
   round  Round  @relation(fields: [roundId], references: [id])
   player Player @relation(fields: [playerId], references: [id])
@@ -89,7 +90,7 @@ model Scoreboard {
   goalsScored    Int      @map("goals_scored")
   goalsConceded  Int      @map("goals_conceded")
   createdAt      DateTime @default(now()) @map("created_at")
-  updateAt       DateTime @default(now()) @updatedAt @map("updated_at")
+  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at")
 
   player       Player       @relation(fields: [playerId], references: [id])
   championship Championship @relation(fields: [championshipId], references: [id])
