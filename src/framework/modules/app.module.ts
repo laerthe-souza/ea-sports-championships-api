@@ -2,9 +2,10 @@ import { EnvironmentConfigModule } from '@framework/modules/environment-config.m
 import { Module } from '@nestjs/common';
 
 import { CustomLoggerModule } from './custom-logger.module';
+import { DatabaseModule } from './database.module';
 
 @Module({
-  imports: [CustomLoggerModule, EnvironmentConfigModule],
+  imports: [CustomLoggerModule, EnvironmentConfigModule, DatabaseModule],
   controllers: [],
   providers: [],
 })

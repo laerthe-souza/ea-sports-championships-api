@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Player {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now()) @map("created_at")
+  updateAt  DateTime @default(now()) @updatedAt @map("updated_at")
+
+  championships PlayerChampionship[]
+  rounds        PlayerRound[]
+  scoreboards   Scoreboard[]
+
+  @@map("players")
+}
+
+model Championship {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+  updateAt  DateTime @default(now()) @updatedAt @map("updated_at")
+
+  players     PlayerChampionship[]
+  rounds      Round[]
+  scoreboards Scoreboard[]
+
+  @@map("championships")
+}
+
+model PlayerChampionship {
+  id             String   @id @default(uuid()) @db.Uuid
+  playerId       String   @map("player_id") @db.Uuid
+  championshipId String   @map("championship_id") @db.Uuid
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  player       Player       @relation(fields: [playerId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+  championship Championship @relation(fields: [championshipId], references: [id], onDelete: Restrict, onUpdate: Cascade)
+
+  @@unique([playerId, championshipId])
+  @@map("players_championships")
+}
+
+model Round {
+  id             String   @id @default(uuid()) @db.Uuid
+  championshipId String   @map("championship_id") @db.Uuid
+  hasPlayed      Boolean  @map("has_played")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updateAt       DateTime @default(now()) @updatedAt @map("updated_at")
+
+  championship Championship  @relation(fields: [championshipId], references: [id])
+  players      PlayerRound[]
+
+  @@map("rounds")
+}
+
+model PlayerRound {
+  id        String   @id @default(uuid()) @db.Uuid
+  roundId   String   @map("round_id") @db.Uuid
+  playerId  String   @map("player_id") @db.Uuid
+  goals     Int
+  isHome    Boolean  @map("is_home")
+  createdAt DateTime @default(now()) @map("created_at")
+  updateAt  DateTime @default(now()) @updatedAt @map("updated_at")
+
+  round  Round  @relation(fields: [roundId], references: [id])
+  player Player @relation(fields: [playerId], references: [id])
+
+  @@unique([roundId, playerId])
+  @@map("players_rounds")
+}
+
+model Scoreboard {
+  id             String   @id @default(uuid()) @db.Uuid
+  championshipId String   @map("championship_id") @db.Uuid
+  playerId       String   @map("player_id") @db.Uuid
+  score          Int
+  playedRounds   Int      @map("played_rounds")
+  wins           Int
+  draws          Int
+  loses          Int
+  goalsScored    Int      @map("goals_scored")
+  goalsConceded  Int      @map("goals_conceded")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updateAt       DateTime @default(now()) @updatedAt @map("updated_at")
+
+  player       Player       @relation(fields: [playerId], references: [id])
+  championship Championship @relation(fields: [championshipId], references: [id])
+
+  @@unique([championshipId, playerId])
+  @@map("scoreboards")
+}
