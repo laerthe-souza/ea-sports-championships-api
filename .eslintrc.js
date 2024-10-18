@@ -84,12 +84,7 @@ module.exports = {
         alphabetize: { order: 'asc', ignoreCase: true },
       },
     ],
-    'import/no-extraneous-dependencies': [
-      'error',
-      {
-        devDependencies: ['jest.config.ts'],
-      },
-    ],
+    'import/no-extraneous-dependencies': ['error', { includeTypes: false }],
   },
   settings: {
     'import/resolver': {
