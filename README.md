@@ -1,6 +1,6 @@
 # EA Sports FC Championship - Organization and Management
 
-This project is a server api for organizing and managing EA Sports FC championships. It allows players to register, join championships, and track their performance through detailed rounds and scoreboards.
+This project is a server API for organizing and managing EA Sports FC championships. It allows players to register, join championships, and track their performance through detailed rounds and scoreboards.
 
 ## Features:
 - **Player management**: Players can register with name, email, and password.
