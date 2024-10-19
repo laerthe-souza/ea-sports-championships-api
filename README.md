@@ -1,6 +1,18 @@
-<p align="center" style="width: 100%; max-width: 800px; margin: -15px auto; 0">
-  This project is responsible for management EA Sports FC championships.
-</p>
+# EA Sports FC Championship - Organization and Management
+
+This project is an application for organizing and managing EA Sports FC championships. It allows players to register, join championships, and track their performance through detailed rounds and scoreboards.
+
+## Features:
+- **Player management**: Players can register with name, email, and password.
+- **Championship creation**: Manage multiple championships with different participants.
+- **Match rounds**: Players face each other in two rounds per week (home and away).
+- **Result tracking**: Match results are recorded, including goals scored and whether the player played at home.
+- **Scoreboard**: Track each player's progress in the championship, including wins, losses, draws, goals scored, and goals conceded.
+
+## Technologies:
+- **Prisma ORM** for database modeling.
+- **NestJS** as the backend framework.
+- **PostgreSQL** as the database.
 
 ## Tools to running this project
 
