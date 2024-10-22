@@ -41,8 +41,12 @@ export class AuthGuard implements CanActivate {
       });
 
       return true;
-    } catch {
-      throw new UnauthorizedException('Invalid or expired token');
+    } catch (error) {
+      if (error.message === 'jwt expired') {
+        throw new UnauthorizedException('Session expired');
+      }
+
+      throw new UnauthorizedException('Invalid token');
     }
   }
 }

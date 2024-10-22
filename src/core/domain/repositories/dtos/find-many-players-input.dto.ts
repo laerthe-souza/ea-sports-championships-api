@@ -1,3 +1,4 @@
 export type IFindManyPlayersInputDTO = {
-  ids: string[];
+  ids?: string[];
+  usernames?: string[];
 };

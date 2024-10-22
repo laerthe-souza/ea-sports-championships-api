@@ -58,6 +58,7 @@ export class PlayersRepository implements IPlayersRepository {
     const players = await this.prisma.player.findMany({
       where: {
         id: { in: input.ids },
+        username: { in: input.usernames },
       },
     });
 
