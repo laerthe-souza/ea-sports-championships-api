@@ -37,4 +37,4 @@ EXPOSE 5001
 
 USER node
 
-CMD yarn prisma migrate deploy && yarn start:prod
+CMD yarn prisma migrate deploy && yarn start
