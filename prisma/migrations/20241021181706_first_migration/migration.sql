@@ -14,7 +14,7 @@ CREATE TABLE "players" (
 CREATE TABLE "championships" (
     "id" UUID NOT NULL,
     "name" TEXT NOT NULL,
-    "created_by" UUID NOT NULL,
+    "created_by" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -49,6 +49,7 @@ CREATE TABLE "players_rounds" (
     "player_id" UUID NOT NULL,
     "goals" INTEGER NOT NULL,
     "is_home" BOOLEAN NOT NULL,
+    "confirmed" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -67,6 +68,7 @@ CREATE TABLE "scoreboards" (
     "loses" INTEGER NOT NULL,
     "goals_scored" INTEGER NOT NULL,
     "goals_conceded" INTEGER NOT NULL,
+    "goal_difference" INTEGER NOT NULL DEFAULT 0,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -86,10 +88,10 @@ CREATE UNIQUE INDEX "players_rounds_round_id_player_id_key" ON "players_rounds"(
 CREATE UNIQUE INDEX "scoreboards_championship_id_player_id_key" ON "scoreboards"("championship_id", "player_id");
 
 -- AddForeignKey
-ALTER TABLE "players_championships" ADD CONSTRAINT "players_championships_player_id_fkey" FOREIGN KEY ("player_id") REFERENCES "players"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "players_championships" ADD CONSTRAINT "players_championships_player_id_fkey" FOREIGN KEY ("player_id") REFERENCES "players"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "players_championships" ADD CONSTRAINT "players_championships_championship_id_fkey" FOREIGN KEY ("championship_id") REFERENCES "championships"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "players_championships" ADD CONSTRAINT "players_championships_championship_id_fkey" FOREIGN KEY ("championship_id") REFERENCES "championships"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "rounds" ADD CONSTRAINT "rounds_championship_id_fkey" FOREIGN KEY ("championship_id") REFERENCES "championships"("id") ON DELETE CASCADE ON UPDATE CASCADE;
