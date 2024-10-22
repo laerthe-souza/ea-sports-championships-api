@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto';
 
 import { Player } from './player.entity';
+import { Round } from './round.entity';
 import { Scoreboard } from './scoreboard.entity';
 
 type IGetChampionshipData = {
@@ -26,6 +27,7 @@ type IRestoreChampionshipInput = {
   updatedAt: Date;
   players: Player[];
   scoreboards: Scoreboard[];
+  rounds: Round[];
   playersCount: number;
 };
 
@@ -37,6 +39,7 @@ type IConstructorInput = {
   updatedAt: Date;
   players: Player[];
   scoreboards: Scoreboard[];
+  rounds: Round[];
   playersCount: number;
 };
 
@@ -48,6 +51,7 @@ export class Championship {
   private updatedAt: Date;
   private players: Player[];
   private scoreboards: Scoreboard[];
+  private rounds: Round[];
   private playersCount: number;
 
   private constructor(championship: IConstructorInput) {
@@ -59,6 +63,7 @@ export class Championship {
     this.playersCount = championship.playersCount;
     this.players = championship.players;
     this.scoreboards = championship.scoreboards;
+    this.rounds = championship.rounds;
   }
 
   get getData(): IGetChampionshipData {
@@ -71,15 +76,53 @@ export class Championship {
     return this.players;
   }
 
+  get getRounds(): Round[] {
+    return this.rounds;
+  }
+
   get getScoreboards(): Scoreboard[] {
     return this.scoreboards;
   }
 
+  addRounds(rounds: Round[]): void {
+    this.rounds = rounds;
+  }
+
+  calculateRankings(): void {
+    this.scoreboards.sort((a, b) => {
+      if (b.getData.score !== a.getData.score) {
+        return b.getData.score - a.getData.score;
+      }
+
+      if (b.getData.goalDifference !== a.getData.goalDifference) {
+        return b.getData.goalDifference - a.getData.goalDifference;
+      }
+
+      if (b.getData.wins !== a.getData.wins) {
+        return b.getData.wins - a.getData.wins;
+      }
+
+      if (b.getData.draws !== a.getData.draws) {
+        return b.getData.draws - a.getData.draws;
+      }
+
+      return a.getData.loses - b.getData.loses;
+    });
+  }
+
   static create(championship: ICreateChampionshipInput): Championship {
+    if (championship.players.length < 2) {
+      throw new Error('The championship must be have two or more players');
+    }
+
     const championshipId = randomUUID();
 
     const scoreboards = championship.players.map(player =>
-      Scoreboard.create({ playerId: player.getData.id, championshipId }),
+      Scoreboard.create({
+        playerId: player.getData.id,
+        playerName: player.getData.name,
+        championshipId,
+      }),
     );
 
     return new Championship({
@@ -90,6 +133,7 @@ export class Championship {
       updatedAt: new Date(),
       players: championship.players,
       scoreboards,
+      rounds: [],
       playersCount: championship.players.length,
     });
   }

@@ -5,7 +5,12 @@ import { IChampionshipsRepository } from '@core/domain/repositories/championship
 import { IPlayersRepository } from '@core/domain/repositories/players.repository';
 import { ChampionshipsRepository } from '@core/infra/repositories/championships.repository';
 import { PlayersRepository } from '@core/infra/repositories/players.repository';
-import { Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { ICreateChampionshipRequestDTO } from './dtos/create-championship-request.dto';
 
@@ -28,9 +33,19 @@ export class CreateChampionshipService {
   ) {}
 
   async execute(data: IRequest): Promise<IResponse> {
+    if (data.players.includes(data.createdBy)) {
+      throw new BadRequestException('You cannot add yourself in players list');
+    }
+
+    const participants = [...data.players, data.createdBy];
+
     const players = await this.playersRepository.findMany({
-      ids: data.players,
+      usernames: participants,
     });
+
+    if (players.length !== participants.length) {
+      throw new NotFoundException('One of the players cannot be found');
+    }
 
     const championship = Championship.create({
       name: data.name,
